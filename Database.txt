@@ -1,0 +1,37 @@
+postgres-# \c school
+You are now connected to database "school" as user "postgres".
+
+school-# \dt
+          List of relations
+ Schema |   Name   | Type  |  Owner
+--------+----------+-------+----------
+ public | marks    | table | postgres
+ public | students | table | postgres
+(2 rows)
+
+school-# \d students
+                                    Table "public.students"
+ Column |          Type          | Collation | Nullable |               Default
+--------+------------------------+-----------+----------+--------------------------------------
+ id     | integer                |           | not null | nextval('students_id_seq'::regclass)
+ name   | character varying(100) |           | not null |
+ age    | integer                |           | not null |
+ class  | character varying(50)  |           | not null |
+Indexes:
+    "students_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "marks" CONSTRAINT "marks_student_id_fkey" FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+
+
+school-# \d marks
+                                      Table "public.marks"
+   Column   |          Type          | Collation | Nullable |              Default
+------------+------------------------+-----------+----------+-----------------------------------
+ id         | integer                |           | not null | nextval('marks_id_seq'::regclass)
+ student_id | integer                |           | not null |
+ subject    | character varying(100) |           | not null |
+ mark       | integer                |           | not null |
+Indexes:
+    "marks_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "marks_student_id_fkey" FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
